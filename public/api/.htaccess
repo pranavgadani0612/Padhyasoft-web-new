@@ -1,0 +1,8 @@
+# Only enquiry.php may be opened from the web – config, sample and templates stay private
+Options -Indexes
+<FilesMatch "^(mail-config.*\.php|.*\.html)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
