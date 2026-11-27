@@ -19,7 +19,7 @@ export default function Services() {
         </div>
       </section>
       <ProcessSection cls="ice" />
-      <FaqSection list={FAQ_PAGE.services} href="/contact" />
+      <FaqSection list={FAQ_PAGE.services} faqKey="services" href="/contact" />
     </>
   );
 }

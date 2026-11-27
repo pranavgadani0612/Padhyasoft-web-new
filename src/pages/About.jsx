@@ -135,7 +135,7 @@ export default function About() {
           <Offices />
         </div>
       </section>
-      <FaqSection list={FAQ_PAGE.about} href="/contact" />
+      <FaqSection list={FAQ_PAGE.about} faqKey="about" href="/contact" />
       <section className="est">
         <div className="wrap est-in" data-rv="">
           <div>

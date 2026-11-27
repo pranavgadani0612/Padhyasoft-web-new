@@ -51,4 +51,18 @@ export function logChat(sessionId, sender, text) {
   } catch (e) {}
 }
 
+/* Logs a visitor question that the chatbot could not answer so an admin can turn it into a FAQ. */
+export function logUnanswered(sessionId, question) {
+  const q = String(question || "").trim();
+  if (!P.UNANSWERED_ENDPOINT || q.length < 3) return;
+  try {
+    fetch(P.UNANSWERED_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, question: q.slice(0, 500), page: location.pathname + location.search }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (e) {}
+}
+
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { IC, P, PROCESS, SERVICES, STATS } from "../../data/site.js";
 import { HERO_VIEWS } from "../../lib/heroViews.js";
 import LeadForm from "../LeadForm.jsx";
+import { faqsFor, loadLiveFaqs } from "../../lib/liveFaqs.js";
 import { Arrow, Counter, Icon, Photo, SplitHeading } from "../ui.jsx";
 
 /* ---------- image on the right of every inner-page hero: a browser window showing a mock-up screen of the page's topic ---------- */
@@ -101,14 +102,33 @@ export function PageHero({ title, sub, photoKey, heroView, band, bandSide, aside
   );
 }
 
-/* ---------- FAQ accordion (+ FAQPage schema for Google) ---------- */
-export function FaqSection({ list, title = "Frequently asked questions", cls = "", href = "#consultation" }) {
+/* ---------- FAQ accordion (+ FAQPage schema for Google) ----------
+   list   = the FAQs built into the page (from the portal at build time, or the fallback in site.js)
+   faqKey = "home" | "about" | "services" | "contact" | service slug – after the page loads, the latest
+            FAQs for that key are fetched from the portal (Padhya Enquiry → FAQ) and replace the list */
+export function FaqSection({ list: builtList, faqKey, title = "Frequently asked questions", cls = "", href = "#consultation" }) {
+  const [live, setLive] = useState(null);
+  useEffect(() => {
+    if (!faqKey) return;
+    let alive = true;
+    setLive(null);
+    loadLiveFaqs().then((d) => {
+      const l = faqsFor(d, faqKey);
+      if (alive && l) setLive(l);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [faqKey]);
+  const list = live || builtList;
+  // a section that only appears after loading the portal FAQs misses the scroll-reveal pass, so show it without the fade
+  const rv = builtList && builtList.length ? "" : undefined;
 
   if (!list || !list.length) return null;
   return (
     <section className={`sec faq ${cls}`}>
       <div className="wrap faq-in">
-        <div data-rv="">
+        <div data-rv={rv}>
           <span className="ov">FAQ</span>
           <h2>{title}</h2>
           <p>Can’t find your answer? Talk to our team – we reply within 24 hours.</p>
@@ -121,7 +141,7 @@ export function FaqSection({ list, title = "Frequently asked questions", cls = "
             </a>
           </div>
         </div>
-        <div className="faq-list" data-rv="120">
+        <div className="faq-list" data-rv={rv === undefined ? undefined : "120"}>
           {list.map(([q, a], i) => (
             <details key={q} open={i === 0}>
               <summary>

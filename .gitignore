@@ -2,3 +2,4 @@ node_modules
 dist
 dist-ssr
 public/api/mail-config.php
+src/data/faqs.live.json

@@ -201,16 +201,34 @@ const SMALL = [
 ];
 
 /* ---------------- knowledge: FAQ + blogs ---------------- */
-const FAQ_DOCS = [
-  ...Object.values(FAQ_PAGE).flat().map(([q, a]) => ({ q, a, slug: null })),
-  ...Object.entries(FAQ_SVC).flatMap(([slug, list]) => list.map(([q, a]) => ({ q, a, slug }))),
-].map((d) => ({ ...d, qT: new Set(contentTokens(tokenize(d.q))), aT: new Set(contentTokens(tokenize(d.a))) }));
+let FAQ_DOCS = [];
+let CHATBOT_EXACT = new Map();
+/* inverse document frequency so rare words ("shopify", "rfid") count more than common ones ("software") */
+let DF = new Map();
+
+function indexFaqs(pages, services, chatbotQa = []) {
+  CHATBOT_EXACT = new Map();
+  const custom = (Array.isArray(chatbotQa) ? chatbotQa : []).map(([q, a]) => {
+    CHATBOT_EXACT.set(normalize(q), { q, a });
+    return { q, a, slug: null };
+  });
+  FAQ_DOCS = [
+    ...custom,
+    ...Object.values(pages).flat().map(([q, a]) => ({ q, a, slug: null })),
+    ...Object.entries(services).flatMap(([slug, list]) => list.map(([q, a]) => ({ q, a, slug }))),
+  ].map((d) => ({ ...d, qT: new Set(contentTokens(tokenize(d.q))), aT: new Set(contentTokens(tokenize(d.a))) }));
+  DF = new Map();
+  FAQ_DOCS.forEach((d) => new Set([...d.qT, ...d.aT]).forEach((t) => DF.set(t, (DF.get(t) || 0) + 1)));
+}
+indexFaqs(FAQ_PAGE, FAQ_SVC);
+
+/* called by the chatbot with the latest FAQs + chatbot-only Q&A from the portal */
+export function setFaqData(pages, services, chatbotQa = []) {
+  if (pages && services) indexFaqs(pages, services, chatbotQa);
+}
 
 const BLOG_DOCS = BLOGS.map((b) => ({ b, tT: new Set(contentTokens(tokenize(b.title + " " + b.category))) }));
 
-/* inverse document frequency so rare words ("shopify", "rfid") count more than common ones ("software") */
-const DF = new Map();
-FAQ_DOCS.forEach((d) => new Set([...d.qT, ...d.aT]).forEach((t) => DF.set(t, (DF.get(t) || 0) + 1)));
 const idf = (t) => Math.log(1 + FAQ_DOCS.length / (1 + (DF.get(t) || 0)));
 
 function bestOverlap(qTokens, set) {
@@ -262,6 +280,10 @@ export function understand(raw) {
   const tokens = tokenize(raw);
   const lang = detectLang(raw);
   if (!text) return { kind: "fallback", lang };
+
+  // 0. exact match from admin-answered chatbot Q&A in DB
+  const exact = CHATBOT_EXACT.get(text);
+  if (exact) return { kind: "faq", q: exact.q, a: exact.a, svc: null, lang };
 
   // 1. small talk – only when the message is short (a greeting inside a long question is ignored)
   if (tokens.length <= 6) {

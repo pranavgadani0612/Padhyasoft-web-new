@@ -165,7 +165,7 @@ export default function Home() {
         </div>
       </section>
       <div style={{ height: "2rem" }}></div>
-      <FaqSection list={FAQ_PAGE.home} />
+      <FaqSection list={FAQ_PAGE.home} faqKey="home" />
       <FormSection />
     </>
   );

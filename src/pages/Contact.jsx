@@ -33,7 +33,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
-      <FaqSection list={FAQ_PAGE.contact} cls="ice" />
+      <FaqSection list={FAQ_PAGE.contact} faqKey="contact" cls="ice" />
     </>
   );
 }

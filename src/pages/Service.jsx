@@ -163,7 +163,7 @@ function ServicePage({ s }) {
         </div>
       </section>
 
-      <FaqSection list={FAQ_SVC[s.slug]} title={`${nm} – frequently asked questions`} />
+      <FaqSection list={FAQ_SVC[s.slug]} faqKey={s.slug} title={`${nm} – frequently asked questions`} />
 
       <section className="sec ice">
         <div className="wrap">
