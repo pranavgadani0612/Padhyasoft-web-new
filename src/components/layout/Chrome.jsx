@@ -80,13 +80,13 @@ export function FloatButtons() {
         </svg>
         <span className="tip">Back to top</span>
       </a>
-      <a className="cl" href={`tel:${P.phone}`} aria-label="Call Padhya">
+      <a className="cl" href={`tel:${P.phone}`} aria-label="Call Padhya Software Technologies">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.6a1 1 0 01-.25 1z" />
         </svg>
         <span className="tip">Call now</span>
       </a>
-      <a className="wa" href={`${P.wa}?text=Hi%20Padhya%2C%20I%27d%20like%20a%20quote`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+      <a className="wa" href={`${P.wa}?text=${encodeURIComponent("Hi Padhya Software Technologies, I'd like a quote")}`} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.3z" />
         </svg>

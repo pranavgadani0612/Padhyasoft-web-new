@@ -41,7 +41,7 @@ export default function SearchOverlay({ open, onClose }) {
         </svg>
       </button>
       <div className="wrap">
-        <label htmlFor="sq">Search Padhya</label>
+        <label htmlFor="sq">Search Padhya Software Technologies</label>
         <input id="sq" ref={inputRef} placeholder="ERP, mobile app, QR code..." autoComplete="off" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKeyDown} />
         <div className="sugg">
           {SUGGEST.map((s) => (

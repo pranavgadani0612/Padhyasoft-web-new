@@ -136,7 +136,7 @@ export function FaqSection({ list: builtList, faqKey, title = "Frequently asked 
             <a className="btn btn-primary" href={href}>
               Ask a question <Arrow />
             </a>
-            <a className="lnk" href={P.wa} target="_blank" rel="noopener noreferrer">
+            <a className="lnk" href={`${P.wa}?text=${encodeURIComponent("Hi Padhya Software Technologies, I have a question")}`} target="_blank" rel="noopener noreferrer">
               Chat on WhatsApp <Arrow />
             </a>
           </div>
@@ -289,6 +289,14 @@ function useOfficeClock() {
   return c;
 }
 
+/* office map picture: opens the office location in Google Maps (new tab) */
+const MapLink = ({ href, city, k }) => (
+  <a className="off-map" href={href} target="_blank" rel="noopener noreferrer" aria-label={`Open the ${city} office in Google Maps`}>
+    <Photo k={k} />
+    <span className="off-map-cta" aria-hidden="true">Open in Google Maps ↗</span>
+  </a>
+);
+
 const Status = ({ open }) => <span className={`st ${open ? "op" : "cl"}`}>{open ? "● Open now" : "Closed now"}</span>;
 
 export function Offices() {
@@ -296,7 +304,7 @@ export function Offices() {
   return (
     <div className="offs">
       <div className="off" data-rv="">
-        <Photo k="mapIN" />
+        <MapLink href={P.map} city="Ahmedabad" k="mapIN" />
         <div className="t">
           <div className="tm">
             <h3>Ahmedabad</h3>
@@ -308,10 +316,11 @@ export function Offices() {
           <p>{P.addrIN}</p>
           <a href={`tel:${P.phone}`}>{P.phoneDisp}</a>
           <a href={`mailto:${P.email}`}>{P.email}</a>
+          <a className="off-dir" href={P.map} target="_blank" rel="noopener noreferrer">Get directions →</a>
         </div>
       </div>
       <div className="off" data-rv="120">
-        <Photo k="mapDK" />
+        <MapLink href={P.mapDK} city="Albertslund" k="mapDK" />
         <div className="t">
           <div className="tm">
             <h3>Albertslund</h3>
@@ -321,6 +330,7 @@ export function Offices() {
           <p>{P.addrDK}</p>
           <a href={`tel:${P.dkPhone}`}>{P.dkPhoneDisp}</a>
           <a href={`mailto:${P.dkEmail}`}>{P.dkEmail}</a>
+          <a className="off-dir" href={P.mapDK} target="_blank" rel="noopener noreferrer">Get directions →</a>
         </div>
       </div>
     </div>

@@ -100,7 +100,7 @@ export function buildKB({ faqPage = {}, faqSvc = {}, services = [], blogs = [] }
   const entries = [];
   const svcBy = (slug) => services.find((s) => s.slug === slug);
 
-  const pageLink = { home: ["/about", "About Padhya"], about: ["/about", "About Padhya"], services: ["/services", "All services"], contact: ["/contact", "Contact us"] };
+  const pageLink = { home: ["/about", "About Padhya Software Technologies"], about: ["/about", "About Padhya Software Technologies"], services: ["/services", "All services"], contact: ["/contact", "Contact us"] };
   for (const [page, list] of Object.entries(faqPage))
     list.forEach(([q, a], i) => entries.push({ id: `fp-${page}-${i}`, kind: "faq", q, a, href: pageLink[page]?.[0], linkText: pageLink[page]?.[1], extra: "" }));
 
@@ -129,7 +129,7 @@ export function buildKB({ faqPage = {}, faqSvc = {}, services = [], blogs = [] }
   }
 
   for (const b of blogs)
-    entries.push({ id: `bl-${b.slug}`, kind: "blog", q: b.title, a: b.description, href: `/blog/${b.slug}`, linkText: "📖 Read the article", extra: `${b.category} ${b.keywords || ""}` });
+    entries.push({ id: `bl-${b.slug}`, kind: "blog", q: b.title, a: b.description, href: `/blog/${b.slug}`, linkText: "Read the article", extra: `${b.category} ${b.keywords || ""}` });
 
   // token sets + document frequency
   const df = {};

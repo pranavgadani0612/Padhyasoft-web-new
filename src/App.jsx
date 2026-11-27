@@ -93,7 +93,7 @@ export default function App() {
   const openSearch = useCallback(() => setSearchOpen(true), []);
   const closeSearch = useCallback(() => {
     setSearchOpen(false);
-    searchBtnRef.current?.focus();
+    searchBtnRef.current?.focus({ preventScroll: true }); // the button is in the sticky header: don't jump the page
   }, []);
   const ui = useMemo(() => ({ openSearch, searchBtnRef }), [openSearch]);
 

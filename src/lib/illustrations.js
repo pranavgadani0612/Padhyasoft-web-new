@@ -132,7 +132,7 @@ S_.trace=()=>{const gates=[110,240,370,500];
 
 /* All services around one team */
 S_.hub=()=>{const list=SERVICES;const n=list.length;
- return svg(`<circle cx="300" cy="170" r="128" fill="none" stroke="${L}" stroke-dasharray="4 8">${spin(300,170,40)}</circle><circle cx="300" cy="170" r="58" fill="${B}"/>${t(300,166,20,"Padhya",W,800)}${t(300,186,11,"one team","#D3E1F8",600)}
+ return svg(`<circle cx="300" cy="170" r="128" fill="none" stroke="${L}" stroke-dasharray="4 8">${spin(300,170,40)}</circle><circle cx="300" cy="170" r="58" fill="${B}"/>${t(300,152,18,"Padhya",W,800)}${t(300,169,11,"Software",W,700)}${t(300,183,11,"Technologies",W,700)}${t(300,199,9,"one team","#D3E1F8",600)}
  ${list.map((s,i)=>{const a=-Math.PI/2+i*2*Math.PI/n,x=300+128*Math.cos(a),y=170+128*Math.sin(a);return `<g><circle cx="${x}" cy="${y}" r="24" fill="${N2}" stroke="${L}"><animate attributeName="fill" values="${N2};${B};${N2};${N2}" keyTimes="0;.06;.16;1" dur="${n*.6}s" begin="${i*.6}s" repeatCount="indefinite"/></circle><g transform="translate(${x-11} ${y-11}) scale(.92)"><path d="${s.icon}" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g></g>`}).join("")}`)};
 
 /* About: founder-led journey timeline + team building software on a laptop */

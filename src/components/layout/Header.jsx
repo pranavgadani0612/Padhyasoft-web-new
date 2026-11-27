@@ -48,6 +48,7 @@ export default function Header() {
   const [menuTop, setMenuTop] = useState("");
   const [drops, setDrops] = useState({}); // which mega menus are open
   const [hoverOff, setHoverOff] = useState(false); // after clicking a link inside a mega menu, keep it closed until the mouse leaves
+  const [hovered, setHovered] = useState(null); // "svc" | "ind" while the mouse is over that menu
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const navRef = useRef(null);
@@ -66,6 +67,56 @@ export default function Header() {
   useEffect(() => {
     document.body.classList.toggle("menu-open", menuOpen);
   }, [menuOpen]);
+
+  // mobile menu open: the page behind must not scroll (CSS locks <html>; this also covers older iPhones,
+  // where touch scrolling ignores overflow:hidden). The menu list itself still scrolls, but never past its ends.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const menu = document.getElementById("menu");
+    let startY = 0;
+    const onStart = (e) => { startY = e.touches[0]?.clientY ?? 0; };
+    const blocks = (e, dy) => {
+      if (!menu || !menu.contains(e.target)) return true;              // outside the menu
+      if (menu.scrollHeight <= menu.clientHeight + 1) return true;     // menu has nothing to scroll
+      const atTop = menu.scrollTop <= 0;
+      const atEnd = menu.scrollTop + menu.clientHeight >= menu.scrollHeight - 1;
+      return (atTop && dy > 0) || (atEnd && dy < 0);                   // would scroll past an end
+    };
+    const onMove = (e) => {
+      const dy = (e.touches[0]?.clientY ?? 0) - startY;                 // > 0: finger moves down
+      if (blocks(e, dy)) e.preventDefault();
+    };
+    const onWheel = (e) => { if (blocks(e, -e.deltaY)) e.preventDefault(); };
+    addEventListener("touchstart", onStart, { passive: true });
+    addEventListener("touchmove", onMove, { passive: false });
+    addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      removeEventListener("touchstart", onStart);
+      removeEventListener("touchmove", onMove);
+      removeEventListener("wheel", onWheel);
+    };
+  }, [menuOpen]);
+
+  // desktop mega menu (Services / Industries) open – by hover or by click – keeps the page from scrolling,
+  // so the menu stays in place while the visitor reads it. No overflow:hidden (that would make the page jump).
+  const megaShown = !!drops.svc || !!drops.ind || (!!hovered && !hoverOff);
+  useEffect(() => {
+    if (!megaShown || !isDesktop()) return; // effects run only in the browser (safe for pre-rendering)
+    const stop = (e) => e.preventDefault();
+    const SCROLL_KEYS = [" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"];
+    const onKey = (e) => {
+      if (/input|textarea|select/i.test(document.activeElement?.tagName || "")) return;
+      if (SCROLL_KEYS.includes(e.key)) e.preventDefault();
+    };
+    addEventListener("wheel", stop, { passive: false });
+    addEventListener("touchmove", stop, { passive: false });
+    addEventListener("keydown", onKey);
+    return () => {
+      removeEventListener("wheel", stop);
+      removeEventListener("touchmove", stop);
+      removeEventListener("keydown", onKey);
+    };
+  }, [megaShown]);
 
   // hide header when scrolling down, show when scrolling up
   useEffect(() => {
@@ -127,7 +178,7 @@ export default function Header() {
           <img src={logo} alt="Padhya Software Technologies" width="157" height="44" />
         </a>
         <ul id="menu" className={menuOpen ? "open" : undefined} style={menuTop ? { top: menuTop } : undefined}>
-          <li className={`has-drop${drops.svc ? " open" : ""}${hoverOff ? " no-hover" : ""}`} onMouseLeave={() => setHoverOff(false)}>
+          <li className={`has-drop${drops.svc ? " open" : ""}${hoverOff ? " no-hover" : ""}`} onMouseEnter={() => setHovered("svc")} onMouseLeave={() => { setHoverOff(false); setHovered(null); }}>
             <button className="drop-btn" aria-expanded={!!drops.svc} aria-haspopup="true" onClick={() => toggleDrop("svc")}>
               Services
               <Chevron />
@@ -166,13 +217,13 @@ export default function Header() {
               </div>
             </div>
           </li>
-          <li className={`has-drop${drops.ind ? " open" : ""}${hoverOff ? " no-hover" : ""}`} onMouseLeave={() => setHoverOff(false)}>
+          <li className={`has-drop${drops.ind ? " open" : ""}${hoverOff ? " no-hover" : ""}`} onMouseEnter={() => setHovered("ind")} onMouseLeave={() => { setHoverOff(false); setHovered(null); }}>
             <button className="drop-btn" aria-expanded={!!drops.ind} aria-haspopup="true" onClick={() => toggleDrop("ind")}>
               Industries
               <Chevron />
             </button>
             <div className="mega" onClick={closeMega}>
-              <div className="in" style={{ gridTemplateColumns: "1fr 3.4fr" }}>
+              <div className="in in-ind">
                 <div className="intro">
                   <h4>Industries</h4>
                   <p>Software engineered for the sectors we know best.</p>
@@ -206,7 +257,7 @@ export default function Header() {
               <path d="M20 20l-3.5-3.5" />
             </svg>
           </button>
-          <a className="iconbtn hdr-call" href={`tel:${P.phone}`} aria-label={`Call Padhya: ${P.phoneDisp}`}>
+          <a className="iconbtn hdr-call" href={`tel:${P.phone}`} aria-label={`Call Padhya Software Technologies: ${P.phoneDisp}`}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d={IC.phone} />
             </svg>

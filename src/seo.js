@@ -11,26 +11,26 @@ const OG_IMAGE = SITE + "/og-image.png";
 const LOGO = SITE + "/logo.webp";
 
 const PAGES = {
-  "/": ["Software Development Company in Ahmedabad | Padhya Software", "Custom software, web & mobile apps for growing businesses. Ahmedabad software team serving India & abroad. Free quote.", "Home"],
+  "/": ["Software Development Company in Ahmedabad | Padhya Software Technologies", "Custom software, web & mobile apps for growing businesses. Ahmedabad software team serving India & abroad. Free quote.", "Home"],
   "/about": ["About Us | Padhya Software Technologies, Ahmedabad", "Learn about Padhya Software Technologies — a trusted software development company in Ahmedabad delivering custom ERP, CRM, web and mobile solutions.", "About"],
-  "/services": ["Software, Web & Mobile App Services | Padhya", "Explore our full range of services: custom software development, web design, mobile apps, ERP, CRM, digital marketing and more.", "Services"],
+  "/services": ["Software, Web & Mobile App Services | Padhya Software Technologies", "Explore our full range of services: custom software development, web design, mobile apps, ERP, CRM, digital marketing and more.", "Services"],
   "/blogs": ["Software, Web & IT Blogs | Padhya Software Technologies", "Read the latest articles, insights and updates from Padhya Software Technologies on software development, web technology and business solutions.", "Blogs"],
   "/contact": ["Contact Us | Padhya Software Technologies, Ahmedabad", "Get in touch with Padhya Software Technologies for custom software, ERP, CRM, and web development solutions. Located in Ahmedabad, Gujarat.", "Contact"],
   "/privacy-policy": ["Privacy Policy | Padhya Software Technologies", "Privacy Policy for Padhya Software Technologies. Learn how we collect, use, and protect your personal information.", "Privacy Policy"],
   "/terms-and-conditions": ["Terms & Conditions | Padhya Software Technologies", "Terms and Conditions for using Padhya Software Technologies' website and services.", "Terms & Conditions"],
 };
 const SVC = {
-  softwaredevelopment: ["Custom Software Development in Ahmedabad | Padhya", "Custom software development services in Ahmedabad — ERP, CRM, inventory management and enterprise solutions by Padhya Software Technologies."],
-  mobileappdevelopment: ["Mobile App Development Company in Ahmedabad | Padhya", "Android and iOS mobile app development services in Ahmedabad — native and cross-platform apps by Padhya Software Technologies."],
-  webdevelopment: ["Web Development Company in Ahmedabad | Padhya", "Padhya Software Technologies offers professional web development services in Ahmedabad — responsive websites, web apps and e-commerce solutions."],
-  webdesign: ["Web Design Company in Ahmedabad | Padhya", "Professional web design and development services in Ahmedabad — modern, responsive and user-friendly websites by Padhya Software Technologies."],
-  industryautomationsolutions: ["Industry Automation Solutions in Ahmedabad | Padhya", "Industrial automation solutions in Ahmedabad — process automation, SCADA, PLC programming and IoT integration by Padhya Software Technologies."],
-  digitalmarketing: ["Digital Marketing Company in Ahmedabad | Padhya", "Digital marketing services in Ahmedabad — SEO, SEM, social media marketing, PPC and content marketing by Padhya Software Technologies."],
-  qrcodesolution: ["Custom QR Code Solutions for Business | Padhya", "Custom QR code solutions for business — generate, scan and manage QR codes for payments, inventory and marketing by Padhya Software Technologies."],
-  trackandtracesystem: ["Track and Trace Software: Asset & Shipment Tracking | Padhya", "Real-time track and trace solutions for asset and shipment tracking — GPS, RFID and IoT powered systems by Padhya Software Technologies."],
-  videoeditingservices: ["Professional Video Editing Services | Padhya", "Professional video editing services — post-production, motion graphics, colour grading and promotional video creation by Padhya Software Technologies."],
-  graphicdesignservices: ["Professional Graphic Design Services | Padhya", "Professional graphic design services — logo design, branding, UI/UX, print and digital creative solutions by Padhya Software Technologies."],
-  ecommercesystem: ["E-commerce Website Development in Ahmedabad | Padhya", "E-commerce website development in Ahmedabad — WooCommerce, Shopify, Magento and custom online stores with secure payments by Padhya Software Technologies."],
+  softwaredevelopment: ["Custom Software Development in Ahmedabad | Padhya Software Technologies", "Custom software development services in Ahmedabad — ERP, CRM, inventory management and enterprise solutions by Padhya Software Technologies."],
+  mobileappdevelopment: ["Mobile App Development Company in Ahmedabad | Padhya Software Technologies", "Android and iOS mobile app development services in Ahmedabad — native and cross-platform apps by Padhya Software Technologies."],
+  webdevelopment: ["Web Development Company in Ahmedabad | Padhya Software Technologies", "Padhya Software Technologies offers professional web development services in Ahmedabad — responsive websites, web apps and e-commerce solutions."],
+  webdesign: ["Web Design Company in Ahmedabad | Padhya Software Technologies", "Professional web design and development services in Ahmedabad — modern, responsive and user-friendly websites by Padhya Software Technologies."],
+  industryautomationsolutions: ["Industry Automation Solutions in Ahmedabad | Padhya Software Technologies", "Industrial automation solutions in Ahmedabad — process automation, SCADA, PLC programming and IoT integration by Padhya Software Technologies."],
+  digitalmarketing: ["Digital Marketing Company in Ahmedabad | Padhya Software Technologies", "Digital marketing services in Ahmedabad — SEO, SEM, social media marketing, PPC and content marketing by Padhya Software Technologies."],
+  qrcodesolution: ["Custom QR Code Solutions for Business | Padhya Software Technologies", "Custom QR code solutions for business — generate, scan and manage QR codes for payments, inventory and marketing by Padhya Software Technologies."],
+  trackandtracesystem: ["Track and Trace Software: Asset & Shipment Tracking | Padhya Software Technologies", "Real-time track and trace solutions for asset and shipment tracking — GPS, RFID and IoT powered systems by Padhya Software Technologies."],
+  videoeditingservices: ["Professional Video Editing Services | Padhya Software Technologies", "Professional video editing services — post-production, motion graphics, colour grading and promotional video creation by Padhya Software Technologies."],
+  graphicdesignservices: ["Professional Graphic Design Services | Padhya Software Technologies", "Professional graphic design services — logo design, branding, UI/UX, print and digital creative solutions by Padhya Software Technologies."],
+  ecommercesystem: ["E-commerce Website Development in Ahmedabad | Padhya Software Technologies", "E-commerce website development in Ahmedabad — WooCommerce, Shopify, Magento and custom online stores with secure payments by Padhya Software Technologies."],
 };
 
 /* every URL that gets its own pre-rendered HTML file */
@@ -42,7 +42,7 @@ export const lastmod = (path) => {
 
 /* meta descriptions: Google shows about 155–160 characters */
 const clip = (t, n = 158) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(" ", n - 1)).replace(/[s,;:–—-]+$/, "") + "…");
-const blogTitle = (t) => (t.length + 9 <= 65 ? `${t} | Padhya` : t);
+const blogTitle = (t) => (t.length + 31 <= 90 ? `${t} | Padhya Software Technologies` : t);
 
 /* ---------- structured data (schema.org) ---------- */
 const ORG = {

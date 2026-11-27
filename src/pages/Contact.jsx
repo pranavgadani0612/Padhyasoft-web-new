@@ -29,7 +29,7 @@ export default function Contact() {
           </div>
           <Offices />
           <div className="map" data-rv="">
-            <iframe title="Padhya Software office map – Ahmedabad" src={P.mapEmbed} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+            <iframe title="Padhya Software Technologies office map – Ahmedabad" src={P.mapEmbed} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
       </section>

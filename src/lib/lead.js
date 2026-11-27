@@ -4,7 +4,7 @@ export const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 export const validPhone = (v) => v.replace(/\D/g, "").length >= 8;
 
 export function leadText(d, src) {
-  return `Hi Padhya, I'd like a free consultation.${src ? ` (via ${src})` : ""}\nName: ${d.name}\nEmail: ${d.email}\nPhone: ${d.phone}\nCompany: ${d.company || "-"}\nService: ${d.service}\nEngagement: ${d.engagement || "-"}\nBudget: ${d.budget || "-"}\nTimeline: ${d.timeline || "-"}\nDetails: ${d.message || "-"}`;
+  return `Hi Padhya Software Technologies, I'd like a free consultation.${src ? ` (via ${src})` : ""}\nName: ${d.name}\nEmail: ${d.email}\nPhone: ${d.phone}\nCompany: ${d.company || "-"}\nService: ${d.service}\nEngagement: ${d.engagement || "-"}\nBudget: ${d.budget || "-"}\nTimeline: ${d.timeline || "-"}\nDetails: ${d.message || "-"}`;
 }
 
 /* Saves an enquiry in the employee portal database. Returns true when it was stored. */

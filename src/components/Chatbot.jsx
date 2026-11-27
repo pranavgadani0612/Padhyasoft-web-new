@@ -50,12 +50,34 @@ function loadSaved() {
   }
 }
 
-/* **bold** and line breaks inside bot messages */
+/* inline icons inside bot messages – written as [[phone]], [[mail]], [[clock]], [[pin]], [[check]] (no emoji) */
+const MSG_ICONS = {
+  phone: <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />,
+  mail: <><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></>,
+  clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
+  pin: <><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z" /><circle cx="12" cy="10" r="3" /></>,
+  check: <><circle cx="12" cy="12" r="10" /><polyline points="8 12 11 15 16 9" /></>,
+};
+const ICON_TOKEN = /\[\[(phone|mail|clock|pin|check)\]\]/;
+const MsgIcon = ({ k }) => (
+  <svg className="cb-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+    style={{ display: "inline-block", verticalAlign: "-2px", marginRight: 6, flex: "none", color: k === "check" ? "#16a34a" : "currentColor" }}>
+    {MSG_ICONS[k]}
+  </svg>
+);
+/* plain text of a message (icon codes removed) – for the portal transcript */
+export const plainMsg = (text) => String(text || "").replace(/\[\[(phone|mail|clock|pin|check)\]\] ?/g, "");
+
+/* **bold**, icons and line breaks inside bot messages */
 function MsgText({ text }) {
   return text.split("\n").map((line, i) => (
     <Fragment key={i}>
       {i > 0 && <br />}
-      {line.split(/\*\*(.+?)\*\*/g).map((part, j) => (j % 2 ? <b key={j}>{part}</b> : part))}
+      {line.split(new RegExp(ICON_TOKEN.source + " ?", "g")).map((seg, j) =>
+        j % 2
+          ? <MsgIcon key={"i" + j} k={seg} />
+          : seg.split(/\*\*(.+?)\*\*/g).map((part, n) => (n % 2 ? <b key={j + "-" + n}>{part}</b> : part))
+      )}
     </Fragment>
   ));
 }
@@ -83,7 +105,7 @@ export default function Chatbot() {
     S.current.msgs = [...S.current.msgs, { who, text, btns, t: time() }];
     setMsgs(S.current.msgs);
     save();
-    logChat(S.current.sid, who === "user" ? "user" : "bot", text); // saved in the employee portal
+    logChat(S.current.sid, who === "user" ? "user" : "bot", plainMsg(text)); // saved in the employee portal
   };
   const setChips = (list) => setChipsState(list || []);
   const bot = async (text, btns, chipList, delay) => {
@@ -100,14 +122,14 @@ export default function Chatbot() {
   const lg = () => "en";
   const svcList = SERVICES.map((s) => [s.name, "svc:" + s.slug]);
   const R = {
-    greet: () => bot("Hello! 👋 Welcome to Padhya Software Technologies. We build custom ERP, CRM, automation, web and mobile software. How can I help you today?"),
+    greet: () => bot("Hello! Welcome to Padhya Software Technologies. We build custom ERP, CRM, automation, web and mobile software. How can I help you today?"),
     services: () => bot(T("servicesIntro", lg()), null, svcList.concat([["Main menu", "menu"]])),
     erp: () => bot(T("erp", lg()), [{ t: "View Software Development", href: "/service/softwaredevelopment" }, { t: "Industry Automation", href: "/service/industryautomationsolutions" }], [["Book free consultation", "book"], ["Pricing", "pricing"], ["Main menu", "menu"]]),
     trace: () => bot(T("trace", lg()), [{ t: "Track & Trace System", href: "/service/trackandtracesystem" }, { t: "QR Code Solutions", href: "/service/qrcodesolution" }], [["Book a demo call", "book"], ["Main menu", "menu"]]),
     pricing: () => bot(T("pricing", lg()), null, [["Get my free estimate", "book"], ["WhatsApp us", "whatsapp"], ["Main menu", "menu"]]),
     timeline: () => bot(T("timeline", lg()), null, [["Book free consultation", "book"], ["Main menu", "menu"]]),
-    contact: () => bot(`${T("contactHead", lg())}📞 India: ${P.phoneDisp}\n✉️ ${P.email}\n📞 Denmark: ${P.dkPhoneDisp}\n✉️ ${P.dkEmail}\n🕙 ${P.hours}`, [{ t: "Call India office", href: "tel:" + P.phone }, { t: "Email us", href: "mailto:" + P.email }, { t: "Contact page", href: "/contact" }]),
-    location: () => bot(`🇮🇳 **${T("locIN", lg())}:** ${P.addrIN}\n\n🇩🇰 **${T("locDK", lg())}:** ${P.addrDK}`, [{ t: "Open in Google Maps", href: P.map }, { t: "Contact page", href: "/contact" }]),
+    contact: () => bot(`${T("contactHead", lg())}[[phone]] India: ${P.phoneDisp}\n[[mail]] ${P.email}\n[[phone]] Denmark: ${P.dkPhoneDisp}\n[[mail]] ${P.dkEmail}\n[[clock]] ${P.hours}`, [{ t: "Call India office", href: "tel:" + P.phone }, { t: "Email us", href: "mailto:" + P.email }, { t: "Contact page", href: "/contact" }]),
+    location: () => bot(`[[pin]] **${T("locIN", lg())}:** ${P.addrIN}\n\n[[pin]] **${T("locDK", lg())}:** ${P.addrDK}`, [{ t: "Open in Google Maps", href: P.map }, { t: "Contact page", href: "/contact" }]),
     hours: () => bot(T(isOpenHours() ? "hoursOpen" : "hoursClosed", lg()), null, [["Leave my details", "book"], ["Main menu", "menu"]]),
     about: () => bot(T("about", lg()), [{ t: "About us", href: "/about" }]),
     portfolio: () => bot(T("portfolio", lg()), [{ t: "About us", href: "/about" }, { t: "Industries we serve", href: "/services" }], [["Book free consultation", "book"], ["Talk to a human", "whatsapp"], ["Main menu", "menu"]]),
@@ -116,24 +138,24 @@ export default function Chatbot() {
     tech: () => bot("Our main technologies: .NET, C#, PHP, Android, iOS, cloud (Azure/AWS), SQL databases, QR/RFID/barcode and IoT integrations. We also do security testing and automation testing.", null, [["Our services", "services"], ["Main menu", "menu"]]),
     hire: () => bot(T("hire", lg()), null, [["Discuss my team", "book"], ["Main menu", "menu"]]),
     support: () => bot(T("support", lg())),
-    career: () => bot(`Thanks for your interest in joining Padhya! Please send your CV to ${P.email} with the role you're applying for in the subject line.`, [{ t: "Email your CV", href: `mailto:${P.email}?subject=Job%20application` }]),
+    career: () => bot(`Thanks for your interest in joining Padhya Software Technologies! Please send your CV to ${P.email} with the role you're applying for in the subject line.`, [{ t: "Email your CV", href: `mailto:${P.email}?subject=Job%20application` }]),
     thanks: () => bot(T("thanks", lg())),
     bye: () => bot(T("bye", lg())),
     whatsapp: () => {
       const L = S.current.lead;
-      const sum = L.name ? `Hi Padhya, I'm ${L.name}. I was chatting on your website.` : "Hi Padhya, I was chatting on your website and would like to talk to your team.";
+      const sum = L.name ? `Hi Padhya Software Technologies, I'm ${L.name}. I was chatting on your website.` : "Hi Padhya Software Technologies, I was chatting on your website and would like to talk to your team.";
       return bot(T("whatsapp", lg()), [{ t: "Open WhatsApp", href: `${P.wa}?text=${encodeURIComponent(sum)}` }]);
     },
     call: () => bot(T("call", lg()), [{ t: "Call now", href: "tel:" + P.phone }]),
     menu: () => bot(T("menu", lg()), null, MAIN, 250),
     fallback: (lang = lg(), guess = null) => {
       const txt = {
-        gujlish: "Maaf karjo, aa hu barabar samji na shakyo 🙏 Tame services, pricing, ERP, website, app ke track & trace vishe puchhi shako – athva amari team sathe seedhi vaat karo.",
-        hinglish: "Maaf kijiye, yeh main theek se samajh nahi paaya 🙏 Aap services, pricing, ERP, website, app ya track & trace ke baare mein pooch sakte hain – ya hamari team se seedhe baat kijiye.",
-        gu: "માફ કરજો, આ હું બરાબર સમજી ન શક્યો 🙏 તમે services, pricing, ERP, વેબસાઇટ, એપ કે track & trace વિશે પૂછી શકો – અથવા અમારી ટીમ સાથે સીધી વાત કરો.",
-        hi: "माफ़ कीजिए, यह मैं ठीक से समझ नहीं पाया 🙏 आप services, pricing, ERP, वेबसाइट, ऐप या track & trace के बारे में पूछ सकते हैं – या हमारी टीम से सीधे बात कीजिए।",
-      }[lang] || "Sorry, I didn't quite catch that 🙏 You can ask me about our services, pricing, ERP, websites, apps or track & trace – or talk to our team directly.";
-      const GUESS = { pricing: "Pricing", erp: "ERP & automation", trace: "QR & track and trace", services: "Our services", contact: "Contact details", location: "Office address", tech: "Technologies", hire: "Hire developers", support: "Support", about: "About Padhya", timeline: "Project timelines", process: "Our process", portfolio: "Our work", hosting: "Hosting & domain" };
+        gujlish: "Maaf karjo, aa hu barabar samji na shakyo. Tame services, pricing, ERP, website, app ke track & trace vishe puchhi shako – athva amari team sathe seedhi vaat karo.",
+        hinglish: "Maaf kijiye, yeh main theek se samajh nahi paaya. Aap services, pricing, ERP, website, app ya track & trace ke baare mein pooch sakte hain – ya hamari team se seedhe baat kijiye.",
+        gu: "માફ કરજો, આ હું બરાબર સમજી ન શક્યો. તમે services, pricing, ERP, વેબસાઇટ, એપ કે track & trace વિશે પૂછી શકો – અથવા અમારી ટીમ સાથે સીધી વાત કરો.",
+        hi: "माफ़ कीजिए, यह मैं ठीक से समझ नहीं पाया। आप services, pricing, ERP, वेबसाइट, ऐप या track & trace के बारे में पूछ सकते हैं – या हमारी टीम से सीधे बात कीजिए।",
+      }[lang] || "Sorry, I didn't quite catch that. You can ask me about our services, pricing, ERP, websites, apps or track & trace – or talk to our team directly.";
+      const GUESS = { pricing: "Pricing", erp: "ERP & automation", trace: "QR & track and trace", services: "Our services", contact: "Contact details", location: "Office address", tech: "Technologies", hire: "Hire developers", support: "Support", about: "About Padhya Software Technologies", timeline: "Project timelines", process: "Our process", portfolio: "Our work", hosting: "Hosting & domain" };
       const chips = [["Our services", "services"], ["Book free consultation", "book"], ["Talk to a human", "whatsapp"]];
       if (guess && GUESS[guess] && guess !== "services") chips.unshift([`Did you mean: ${GUESS[guess]}?`, guess]);
       return bot(txt, null, chips);
@@ -163,7 +185,7 @@ export default function Chatbot() {
       st.flow = flow;
       save();
     };
-    if (/^cancel$/i.test(v) || v === "✖ Cancel") {
+    if (/^cancel$/i.test(v)) {
       next(null);
       return bot(T("cancelled", l));
     }
@@ -365,9 +387,9 @@ export default function Chatbot() {
         >
           ×
         </button>
-        Hi 👋 Looking for software, ERP or automation? I can help!
+        Hi! Looking for software, ERP or automation? I can help!
       </div>
-      <button className="cb-fab" ref={fabRef} aria-label="Open chat with Padhya Assistant" aria-expanded={open} aria-controls="cbWin" onClick={() => (S.current.open ? closeChat() : openChat())}>
+      <button className="cb-fab" ref={fabRef} aria-label="Open chat with Padhya Software Technologies" aria-expanded={open} aria-controls="cbWin" onClick={() => (S.current.open ? closeChat() : openChat())}>
         <svg className="i-chat" viewBox="0 0 24 24" fill="currentColor">
           <path d="M4 4h16a2 2 0 012 2v10a2 2 0 01-2 2H9l-5 4v-4a2 2 0 01-2-2V6a2 2 0 012-2zm3 6.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm5 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm5 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" />
         </svg>
@@ -376,13 +398,13 @@ export default function Chatbot() {
         </svg>
         <span className={`cb-badge${badge ? " show" : ""}`}>1</span>
       </button>
-      <section className="cb-win" id="cbWin" role="dialog" aria-label="Padhya Assistant chat" aria-modal="false">
+      <section className="cb-win" id="cbWin" role="dialog" aria-label="Padhya Software Technologies chat" aria-modal="false">
         <header className="cb-head">
           <div className="cb-av">
             <img src={iconBlue} alt="" />
           </div>
           <div className="cb-ttl">
-            <b>Padhya Assistant</b>
+            <b>Padhya Software Technologies</b>
             <small>
               <i className="cb-dot"></i>
               <span>Online · replies instantly</span>
@@ -458,7 +480,7 @@ export default function Chatbot() {
           </button>
         </form>
         <div className="cb-foot">
-          Powered by Padhya Software ·{" "}
+          Powered by Padhya Software Technologies ·{" "}
           <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
             Privacy
           </a>

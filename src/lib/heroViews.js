@@ -16,7 +16,7 @@ const btn = (x, y, w, txt, fill = C.blue, col = C.w) => `${r(x, y, w, 24, fill, 
 const pulse = (cx, cy, col = C.green) =>
   `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${col}"/><circle cx="${cx}" cy="${cy}" r="3.5" fill="none" stroke="${col}"><animate attributeName="r" values="3.5;9" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.8s" repeatCount="indefinite"/></circle>`;
 const side = (items, active = 0) =>
-  `${r(0, 0, 118, 340, C.navy, 0)}<circle cx="22" cy="24" r="8" fill="${C.blue2}"/>${t(36, 28, 11, "Padhya", C.w, 800)}` +
+  `${r(0, 0, 118, 340, C.navy, 0)}<circle cx="22" cy="24" r="8" fill="${C.blue2}"/>${t(36, 24, 8.5, "Padhya Software", C.w, 800)}${t(36, 35, 8.5, "Technologies", C.w, 800)}` +
   items.map((n, i) => `${i === active ? r(10, 52 + i * 30, 98, 24, C.blue, 5) : ""}${r(20, 60 + i * 30, 8, 8, i === active ? C.w : C.sky3, 2, i === active ? "" : 'fill-opacity=".5"')}${t(36, 68 + i * 30, 9.5, n, i === active ? C.w : C.sky3, 600)}`).join("");
 const head = (x, title, sub) => `${t(x, 30, 15, title, C.navy, 800)}${sub ? t(x, 44, 9, sub, C.muted, 600) : ""}`;
 const qr = (x, y, cell, seed = 7) => {
@@ -219,7 +219,7 @@ V.graphicdesignservices = () =>
 /* About */
 V.about = () =>
   svg(
-    r(0, 0, 600, 150, C.navy, 0) + `<circle cx="520" cy="40" r="90" fill="${C.blue}" opacity=".35"/>` + t(28, 44, 9, "ABOUT PADHYA", C.sky3, 800) + t(28, 74, 20, "Founder-led software team", C.w, 800) + t(28, 98, 20, "building custom software", C.w, 800) + t(28, 124, 9.5, "Ahmedabad · India  |  Albertslund · Denmark", C.sky3, 600) +
+    r(0, 0, 600, 150, C.navy, 0) + `<circle cx="520" cy="40" r="90" fill="${C.blue}" opacity=".35"/>` + t(28, 44, 9, "ABOUT PADHYA SOFTWARE TECHNOLOGIES", C.sky3, 800) + t(28, 74, 20, "Founder-led software team", C.w, 800) + t(28, 98, 20, "building custom software", C.w, 800) + t(28, 124, 9.5, "Ahmedabad · India  |  Albertslund · Denmark", C.sky3, 600) +
       [["7+", "Years"], ["150+", "Clients"], ["50+", "Enterprise projects"], ["5+", "Countries"]].map(([v, l], i) => `${card(28 + i * 138, 132, 128, 62)}${t(42 + i * 138, 160, 18, v, C.navy, 800)}${t(42 + i * 138, 180, 8.5, l, C.muted, 600)}`).join("") +
       card(28, 210, 266, 116) + t(42, 232, 10, "Our team", C.navy, 800) + [0, 1, 2, 3, 4].map((i) => `<circle cx="${62 + i * 48}" cy="272" r="18" fill="${[C.blue, C.blue2, C.green, C.amber, C.navy][i]}" fill-opacity=".2"/><circle cx="${62 + i * 48}" cy="266" r="6" fill="${[C.blue, C.blue2, C.green, C.amber, C.navy][i]}"/><path d="M${52 + i * 48},282 a10,8 0 0 1 20,0z" fill="${[C.blue, C.blue2, C.green, C.amber, C.navy][i]}"/>`).join("") + t(42, 312, 8.5, "Developers · designers · marketers", C.muted, 600) +
       card(306, 210, 266, 116) + t(320, 232, 10, "Where we work", C.navy, 800) + Array.from({ length: 70 }, (_, i) => `<circle cx="${330 + (i % 14) * 16}" cy="${248 + Math.floor(i / 14) * 14}" r="2" fill="${C.sky3}"/>`).join("") + pulse(498, 290, C.blue) + t(506, 294, 8, "Ahmedabad", C.navy, 700) + pulse(424, 262, C.green) + t(432, 266, 8, "Denmark", C.navy, 700)
@@ -262,7 +262,7 @@ V.contact = () => {
 V.blogs = () =>
   svg(
     head(24, "Insights &amp; Blogs") + ["All", "Software", "Mobile", "Marketing", "Automation"].map((n, i) => `${r(190 + i * 78, 16, 70, 22, i === 0 ? C.navy : C.w, 11, i ? `stroke="${C.line}"` : "")}${t(225 + i * 78, 30.5, 9, n, i === 0 ? C.w : C.text, 700, "middle")}`).join("") +
-      card(24, 54, 300, 272) + r(32, 62, 284, 140, C.blue, 6) + `<circle cx="260" cy="110" r="44" fill="${C.blue2}" opacity=".6"/><circle cx="90" cy="170" r="28" fill="${C.sky3}" opacity=".35"/>` + chip(40, 214, "Software", C.blue2) + bar(40, 240, 250, C.navy, 10) + bar(40, 256, 200, C.navy, 10) + bar(40, 280, 260) + bar(40, 292, 220) + t(40, 314, 8.5, "Padhya Team · 6 min read", C.muted, 600) +
+      card(24, 54, 300, 272) + r(32, 62, 284, 140, C.blue, 6) + `<circle cx="260" cy="110" r="44" fill="${C.blue2}" opacity=".6"/><circle cx="90" cy="170" r="28" fill="${C.sky3}" opacity=".35"/>` + chip(40, 214, "Software", C.blue2) + bar(40, 240, 250, C.navy, 10) + bar(40, 256, 200, C.navy, 10) + bar(40, 280, 260) + bar(40, 292, 220) + t(40, 314, 8.5, "Padhya Software Technologies · 6 min read", C.muted, 600) +
       [0, 1, 2].map((i) => `${card(336, 54 + i * 92, 240, 82)}${r(344, 62 + i * 92, 74, 66, [C.sky, "#E7F7F1", "#FFF4E3"][i], 5)}${r(368, 84 + i * 92, 26, 22, [C.blue2, C.green, C.amber][i], 5, 'fill-opacity=".5"')}${chip(428, 64 + i * 92, ["Mobile Apps", "Automation", "Marketing"][i], [C.blue2, C.green, C.amber][i])}${bar(428, 88 + i * 92, 130, C.navy)}${bar(428, 100 + i * 92, 100, C.navy)}${bar(428, 116 + i * 92, 80)}`).join("")
   );
 

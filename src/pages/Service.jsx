@@ -90,7 +90,7 @@ function ServicePage({ s }) {
           <div className="wrap two">
             <div data-rv="">
               <span className="ov">Why choose us</span>
-              <h2>Why businesses choose Padhya for {nm}</h2>
+              <h2>Why businesses choose Padhya Software Technologies for {nm}</h2>
             </div>
             <WhyList items={s.why} />
           </div>
@@ -127,7 +127,7 @@ function ServicePage({ s }) {
           <div className="wrap">
             <div className="head" data-rv="">
               <div>
-                <span className="ov">The Padhya advantage</span>
+                <span className="ov">The Padhya Software Technologies advantage</span>
                 <h2>{s.extra[0]}</h2>
               </div>
             </div>
@@ -156,7 +156,7 @@ function ServicePage({ s }) {
             <a className="est-l" href={`tel:${P.phone}`}>
               <Icon d={IC.phone} /> {P.phoneDisp}
             </a>
-            <a className="est-l" href={`${P.wa}?text=${encodeURIComponent("Hi, I'm interested in your " + nm + " services")}`} target="_blank" rel="noopener noreferrer">
+            <a className="est-l" href={`${P.wa}?text=${encodeURIComponent("Hi Padhya Software Technologies, I'm interested in your " + nm + " services")}`} target="_blank" rel="noopener noreferrer">
               <Icon d={WA_ICON} /> Chat on WhatsApp
             </a>
           </div>

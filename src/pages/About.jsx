@@ -146,7 +146,7 @@ export default function About() {
             <a className="btn btn-white" href="/contact">
               Get a free quote <Arrow />
             </a>
-            <a className="est-l" href={`${P.wa}?text=${encodeURIComponent("Hi Padhya, I'd like to discuss a project")}`} target="_blank" rel="noopener noreferrer">
+            <a className="est-l" href={`${P.wa}?text=${encodeURIComponent("Hi Padhya Software Technologies, I'd like to discuss a project")}`} target="_blank" rel="noopener noreferrer">
               <Icon d={WA_ICON} /> Contact our team
             </a>
             <a className="est-l" href={`tel:${P.phone}`}>

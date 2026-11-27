@@ -45,7 +45,7 @@ function Post({ b }) {
               <a className="bc-cat" href={blogCatHref(b.category)}>
                 {b.category}
               </a>
-              <span>By Padhya Team</span>
+              <span>By Padhya Software Technologies</span>
               <span>{fmtDate(b.date)}</span>
               <span>{b.minutes} min read</span>
             </div>
@@ -78,9 +78,6 @@ function Post({ b }) {
               <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`} target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </a>
-              <a href={`https://x.com/intent/tweet?text=${encodeURIComponent(b.title)}&url=${encodeURIComponent(pageUrl)}`} target="_blank" rel="noopener noreferrer">
-                X
-              </a>
             </div>
           </article>
 
@@ -91,7 +88,7 @@ function Post({ b }) {
               <a className="btn btn-white" href="#consultation">
                 Get Free Consultation <Arrow />
               </a>
-              <a className="bp-wa" href={`${P.wa}?text=${encodeURIComponent("Hi Padhya, I read your article: " + b.title)}`} target="_blank" rel="noopener noreferrer">
+              <a className="bp-wa" href={`${P.wa}?text=${encodeURIComponent("Hi Padhya Software Technologies, I read your article: " + b.title)}`} target="_blank" rel="noopener noreferrer">
                 <Icon d={WA_ICON} /> Chat on WhatsApp
               </a>
             </div>
